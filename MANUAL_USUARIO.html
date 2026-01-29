@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual do Usuário - Gerenciador de Certificados Digitais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+        
+        h1 {
+            color: #1E3A5F;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        h2 {
+            color: #1E3A5F;
+            border-bottom: 2px solid #4A90D9;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            page-break-after: avoid;
+        }
+        
+        h3 {
+            color: #3D5A80;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-bottom: 15px;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #1E3A5F;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9em;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+        }
+        
+        .tip {
+            background: #e7f3ff;
+            border-left: 4px solid #4A90D9;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .tip-title {
+            font-weight: bold;
+            color: #1E3A5F;
+            margin-bottom: 5px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .danger {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
+        .toc ol {
+            margin-bottom: 0;
+        }
+        
+        .toc a {
+            color: #1E3A5F;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .header-box {
+            background: linear-gradient(135deg, #1E3A5F 0%, #3D5A80 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header-box h1 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .version {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .step-number {
+            background: #4A90D9;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+        }
+        
+        @media print {
+            body {
+                padding: 20px;
+            }
+            
+            h2 {
+                page-break-after: avoid;
+            }
+            
+            .tip, .warning, .danger {
+                page-break-inside: avoid;
+            }
+            
+            table {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-box">
+        <h1>🔐 Manual do Usuário</h1>
+        <p>Gerenciador de Certificados Digitais</p>
+        <span class="version">Versão 2.1.0</span>
+    </div>
+    
+    <div class="toc">
+        <h3>📑 Sumário</h3>
+        <ol>
+            <li><a href="#intro">Introdução</a></li>
+            <li><a href="#acesso">Primeiro Acesso</a></li>
+            <li><a href="#dashboard">Dashboard Principal</a></li>
+            <li><a href="#cadastro">Cadastro de Clientes</a></li>
+            <li><a href="#config">Configurações</a></li>
+            <li><a href="#email">Notificações por Email</a></li>
+            <li><a href="#importar">Importar e Exportar Dados</a></li>
+            <li><a href="#faq">Perguntas Frequentes</a></li>
+        </ol>
+    </div>
+    
+    <h2 id="intro">1. Introdução</h2>
+    <p>O <strong>Gerenciador de Certificados Digitais</strong> é um sistema desenvolvido para facilitar o controle e monitoramento de certificados digitais (.pfx) de clientes de escritórios de contabilidade.</p>
+    
+    <h3>Principais Funcionalidades:</h3>
+    <ul>
+        <li>Leitura automática de certificados .pfx</li>
+        <li>Monitoramento de datas de vencimento</li>
+        <li>Cadastro de clientes com email para notificações</li>
+        <li>Envio automático de alertas de vencimento por email</li>
+        <li>Exportação de relatórios para Excel</li>
+        <li>Tema claro e escuro</li>
+    </ul>
+    
+    <div class="tip">
+        <div class="tip-title">💡 Dica</div>
+        O sistema lê automaticamente a senha do certificado a partir do nome do arquivo, seguindo o padrão: <code>CÓDIGO - RAZÃO SOCIAL Senha SENHA.pfx</code>
+    </div>
+    
+    <h2 id="acesso">2. Primeiro Acesso</h2>
+    
+    <h3>2.1 Iniciando o Sistema</h3>
+    <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">Abra o terminal/prompt de comando</div>
+    </div>
+    <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">Navegue até a pasta do sistema</div>
+    </div>
+    <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">Execute o comando: <code>streamlit run app.py</code></div>
+    </div>
+    <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">O navegador abrirá automaticamente com o sistema</div>
+    </div>
+    
+    <h3>2.2 Tela Inicial</h3>
+    <p>Ao abrir o sistema, você verá:</p>
+    <ul>
+        <li><strong>Sidebar (lateral esquerda):</strong> Menu de navegação</li>
+        <li><strong>Área principal:</strong> Dashboard com informações dos certificados</li>
+    </ul>
+    
+    <h2 id="dashboard">3. Dashboard Principal</h2>
+    
+    <h3>3.1 Cards de Métricas</h3>
+    <p>Na parte superior, você encontra 5 cards com informações resumidas:</p>
+    
+    <table>
+        <tr>
+            <th>Card</th>
+            <th>Descrição</th>
+        </tr>
+        <tr>
+            <td><strong>Total</strong></td>
+            <td>Quantidade total de certificados na pasta</td>
+        </tr>
+        <tr>
+            <td><strong>Vencidos</strong></td>
+            <td>Certificados já vencidos (vermelho)</td>
+        </tr>
+        <tr>
+            <td><strong>Atenção</strong></td>
+            <td>Certificados que vencem em até 30 dias (amarelo)</td>
+        </tr>
+        <tr>
+            <td><strong>Válidos</strong></td>
+            <td>Certificados com mais de 30 dias de validade (verde)</td>
+        </tr>
+        <tr>
+            <td><strong>Erros</strong></td>
+            <td>Certificados com problema de leitura</td>
+        </tr>
+    </table>
+    
+    <h3>3.2 Painel de Ações Pendentes</h3>
+    <p>Logo abaixo das métricas, aparecem alertas quando há:</p>
+    <ul>
+        <li>Certificados vencidos que precisam de renovação</li>
+        <li>Certificados próximos do vencimento</li>
+        <li>Clientes sem email cadastrado (não receberão notificações)</li>
+    </ul>
+    <p>Clique em <strong>"Ver detalhes"</strong> para expandir a lista completa.</p>
+    
+    <h3>3.3 Tabela de Certificados</h3>
+    <p>A tabela principal mostra todos os certificados. <strong>Clique em qualquer linha</strong> para abrir o cadastro do cliente.</p>
+    
+    <h4>Filtros Disponíveis:</h4>
+    <ul>
+        <li><strong>Busca:</strong> Digite código ou nome para filtrar</li>
+        <li><strong>Status:</strong> Filtre por Vencido, Atenção, Válido ou Erro</li>
+        <li><strong>Email:</strong> Filtre clientes com ou sem email cadastrado</li>
+    </ul>
+    
+    <h2 id="cadastro">4. Cadastro de Clientes</h2>
+    
+    <h3>4.1 Como Cadastrar</h3>
+    <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">Na tabela de certificados, <strong>clique na linha</strong> do cliente desejado</div>
+    </div>
+    <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">O formulário de cadastro abrirá automaticamente no topo da página</div>
+    </div>
+    <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">Preencha os campos: Email, Telefone, Responsável, Observações</div>
+    </div>
+    <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">Clique em <strong>"💾 Salvar"</strong></div>
+    </div>
+    
+    <div class="warning">
+        <strong>⚠️ Importante:</strong> O campo <strong>Email</strong> é obrigatório para que o cliente receba notificações de vencimento.
+    </div>
+    
+    <h2 id="config">5. Configurações</h2>
+    <p>Acesse as configurações clicando em <strong>"⚙️ Configurações"</strong> na sidebar.</p>
+    
+    <h3>5.1 Aba "Email SMTP"</h3>
+    <p>Configure o envio de emails:</p>
+    <ul>
+        <li><strong>Email do Remetente:</strong> Seu email Gmail</li>
+        <li><strong>Senha de Aplicativo:</strong> Senha gerada no Google</li>
+        <li><strong>Nome do Escritório:</strong> Aparece no rodapé dos emails</li>
+    </ul>
+    
+    <h3>5.2 Aba "Notificações"</h3>
+    <ul>
+        <li><strong>Dias para notificar:</strong> Quantos dias antes do vencimento notificar (1-90)</li>
+        <li><strong>Notificação automática:</strong> Ative para enviar automaticamente ao abrir o sistema</li>
+    </ul>
+    
+    <h2 id="email">6. Notificações por Email</h2>
+    
+    <h3>6.1 Configurar Senha de Aplicativo do Google</h3>
+    <p>Para enviar emails pelo Gmail, você precisa criar uma <strong>Senha de Aplicativo</strong>:</p>
+    
+    <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">Acesse <a href="https://myaccount.google.com">myaccount.google.com</a></div>
+    </div>
+    <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">No menu lateral, clique em <strong>Segurança</strong></div>
+    </div>
+    <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">Ative a <strong>Verificação em duas etapas</strong> (se não estiver ativa)</div>
+    </div>
+    <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">Clique em <strong>Senhas de app</strong></div>
+    </div>
+    <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">Selecione "Email" e "Computador Windows"</div>
+    </div>
+    <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-content">Clique em <strong>Gerar</strong></div>
+    </div>
+    <div class="step">
+        <div class="step-number">7</div>
+        <div class="step-content">Copie a senha de 16 caracteres e cole no sistema</div>
+    </div>
+    
+    <h3>6.2 Envio Manual com Confirmação</h3>
+    <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">Vá em <strong>Configurações > Notificações</strong></div>
+    </div>
+    <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">Clique em <strong>"📤 Preparar Envio de Notificações"</strong></div>
+    </div>
+    <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">Revise a lista de destinatários</div>
+    </div>
+    <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">Clique em <strong>"✅ Confirmar Envio"</strong></div>
+    </div>
+    
+    <div class="tip">
+        <div class="tip-title">💡 Anti-spam</div>
+        O sistema não reenvia notificações para o mesmo cliente se já foi enviada uma nos últimos 7 dias.
+    </div>
+    
+    <h2 id="importar">7. Importar e Exportar Dados</h2>
+    
+    <h3>7.1 Exportar Cadastros (CSV)</h3>
+    <p>Vá em <strong>Configurações > Importar/Exportar</strong> e clique em <strong>"📥 Exportar CSV"</strong>.</p>
+    
+    <h3>7.2 Importar Cadastros (CSV)</h3>
+    <p>Prepare um arquivo CSV com as colunas:</p>
+    <div class="code-block">codigo,razao_social,email,telefone,responsavel,observacoes</div>
+    <p>Selecione o arquivo, revise os dados e clique em <strong>"✅ Confirmar Importação"</strong>.</p>
+    
+    <h3>7.3 Exportar Lista para Excel</h3>
+    <p>No dashboard, clique em <strong>"📥 Exportar Excel"</strong> para baixar a lista de certificados.</p>
+    
+    <h2 id="faq">8. Perguntas Frequentes</h2>
+    
+    <h3>O sistema não encontra os certificados</h3>
+    <p>Verifique se o caminho da pasta está correto no arquivo <code>app.py</code>.</p>
+    
+    <h3>Erro na leitura do certificado</h3>
+    <p>Pode ser: senha incorreta no nome do arquivo, arquivo corrompido ou nome fora do padrão.</p>
+    
+    <h3>Email não está sendo enviado</h3>
+    <p>Verifique: senha de aplicativo, teste de conexão, email cadastrado, e se não foi enviado nos últimos 7 dias.</p>
+    
+    <h3>Como mudar o tema?</h3>
+    <p>Na sidebar, use o toggle <strong>"🌙 Tema Escuro"</strong>.</p>
+    
+    <h3>Como atualizar a lista?</h3>
+    <p>Clique em <strong>"🔄 Atualizar Dados"</strong> na sidebar.</p>
+    
+    <div class="footer">
+        <p>Manual do Usuário - Gerenciador de Certificados Digitais</p>
+        <p>Versão 2.1.0 - Janeiro 2026</p>
+        <p style="margin-top: 20px; font-size: 0.9em;">
+            <strong>Para salvar como PDF:</strong> Pressione <code>Ctrl+P</code> e selecione "Salvar como PDF"
+        </p>
+    </div>
+</body>
+</html>

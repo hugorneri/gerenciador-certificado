@@ -1,0 +1,21 @@
+# Configuração do Streamlit
+# Documentação: https://docs.streamlit.io/develop/api-reference/configuration/config.toml
+
+[server]
+# Escuta em todos os endereços da máquina (permite acesso pela rede local)
+address = "0.0.0.0"
+
+# Necessário para acesso de outros PCs na rede (evita erro "Failed to fetch dynamically imported module")
+# Atenção: desativar CORS e XSRF reduz a segurança; use apenas em rede interna confiável
+enableCORS = false
+enableXsrfProtection = false
+
+# Porta padrão
+port = 8501
+
+# Headless: não abre o navegador automaticamente (útil ao rodar em servidor)
+# headless = false
+
+[browser]
+# Abre no navegador ao iniciar (apenas no PC onde o comando foi executado)
+gatherUsageStats = false

@@ -5,6 +5,7 @@ Dashboard Streamlit para monitorar validade de certificados digitais.
 
 import os
 import re
+import time
 import warnings
 from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
@@ -616,63 +617,81 @@ def modal_cadastro_cliente(codigo: str, razao_social: str):
     """Renderiza o modal de cadastro/edição de cliente."""
     cliente = db.get_cliente(codigo)
     
+    # Valores iniciais (do banco ou vazios)
+    email_inicial = (cliente.get("email") or "").strip() if cliente else ""
+    telefone_inicial = (cliente.get("telefone") or "").strip() if cliente else ""
+    responsavel_inicial = (cliente.get("responsavel") or "").strip() if cliente else ""
+    observacoes_inicial = (cliente.get("observacoes") or "").strip() if cliente else ""
+    
     st.subheader(f"📝 Cadastro: {razao_social}")
     
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.text_input("Código", value=codigo, disabled=True, key=f"cad_codigo_{codigo}")
-        email_cliente = st.text_input(
-            "Email *",
-            value=cliente.get("email", "") if cliente else "",
-            placeholder="cliente@email.com",
-            key=f"cad_email_{codigo}"
+    # Form garante que os valores só são lidos no submit, evitando estado inconsistente
+    with st.form(key=f"form_cadastro_{codigo}", clear_on_submit=False):
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.text_input("Código", value=codigo, disabled=True, key=f"cad_codigo_{codigo}")
+            email_cliente = st.text_input(
+                "Email *",
+                value=email_inicial,
+                placeholder="cliente@email.com",
+                key=f"cad_email_{codigo}"
+            )
+            telefone = st.text_input(
+                "Telefone",
+                value=telefone_inicial,
+                placeholder="(11) 99999-9999",
+                key=f"cad_telefone_{codigo}"
+            )
+        
+        with col2:
+            st.text_input("Razão Social", value=razao_social, disabled=True, key=f"cad_razao_{codigo}")
+            responsavel = st.text_input(
+                "Responsável",
+                value=responsavel_inicial,
+                placeholder="Nome do responsável",
+                key=f"cad_responsavel_{codigo}"
+            )
+        
+        observacoes = st.text_area(
+            "Observações",
+            value=observacoes_inicial,
+            placeholder="Anotações sobre o cliente...",
+            key=f"cad_obs_{codigo}"
         )
-        telefone = st.text_input(
-            "Telefone",
-            value=cliente.get("telefone", "") if cliente else "",
-            placeholder="(11) 99999-9999",
-            key=f"cad_telefone_{codigo}"
-        )
+        
+        col_btn1, col_btn2, _ = st.columns([1, 1, 2])
+        
+        with col_btn1:
+            submitted_salvar = st.form_submit_button("💾 Salvar")
+        with col_btn2:
+            submitted_cancelar = st.form_submit_button("❌ Cancelar")
     
-    with col2:
-        st.text_input("Razão Social", value=razao_social, disabled=True, key=f"cad_razao_{codigo}")
-        responsavel = st.text_input(
-            "Responsável",
-            value=cliente.get("responsavel", "") if cliente else "",
-            placeholder="Nome do responsável",
-            key=f"cad_responsavel_{codigo}"
-        )
+    # Tratamento fora do form para poder fazer rerun
+    if submitted_cancelar:
+        st.session_state.cliente_selecionado = None
+        st.rerun()
     
-    observacoes = st.text_area(
-        "Observações",
-        value=cliente.get("observacoes", "") if cliente else "",
-        placeholder="Anotações sobre o cliente...",
-        key=f"cad_obs_{codigo}"
-    )
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        if st.button("💾 Salvar", type="primary", width="stretch", key=f"btn_salvar_{codigo}"):
-            if db.salvar_cliente(
-                codigo=codigo,
-                razao_social=razao_social,
-                email=email_cliente,
-                telefone=telefone,
-                responsavel=responsavel,
-                observacoes=observacoes
-            ):
-                st.success("Cliente salvo com sucesso!")
-                st.session_state.cliente_selecionado = None
-                st.rerun()
-            else:
-                st.error("Erro ao salvar cliente.")
-    
-    with col2:
-        if st.button("❌ Cancelar", width="stretch", key=f"btn_cancelar_{codigo}"):
+    if submitted_salvar:
+        # Normaliza campos em branco para None
+        email_cliente = (email_cliente or "").strip() or None
+        telefone = (telefone or "").strip() or None
+        responsavel = (responsavel or "").strip() or None
+        observacoes = (observacoes or "").strip() or None
+        
+        if db.salvar_cliente(
+            codigo=codigo,
+            razao_social=razao_social,
+            email=email_cliente,
+            telefone=telefone,
+            responsavel=responsavel,
+            observacoes=observacoes
+        ):
+            st.success("Cliente salvo com sucesso!")
             st.session_state.cliente_selecionado = None
             st.rerun()
+        else:
+            st.error("Erro ao salvar cliente. Tente novamente.")
 
 
 def renderizar_painel_acoes_pendentes(df: pd.DataFrame, clientes_db: dict):
@@ -871,7 +890,7 @@ def pagina_dashboard():
     elif filtro_email == "Sem Email":
         df_filtrado = df_filtrado[df_filtrado['Email'] == "—"]
     
-    # Botão de exportar
+    # Botão de exportar (key única evita MediaFileStorageError ao navegar/rerun)
     col1, col2 = st.columns([1, 4])
     
     with col1:
@@ -880,7 +899,8 @@ def pagina_dashboard():
             "📥 Exportar Excel",
             data=excel_data,
             file_name=f"certificados_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            key=f"download_excel_{int(time.time() * 1000)}"
         )
     
     st.markdown(f"*Exibindo {len(df_filtrado)} de {len(df)} certificados. Clique em uma linha para editar.*")

@@ -136,3 +136,6 @@ config.local.py
 
 # Streamlit
 .streamlit/secrets.toml
+
+# database
+data/database.db
